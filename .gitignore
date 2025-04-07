@@ -1,0 +1,9 @@
+# Credentials
+creds.py
+*.pem
+
+# Unnecessary uv files
+.venv
+# .python-version
+# pyproject.toml
+# uv.lock
