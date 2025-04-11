@@ -55,9 +55,9 @@ def home():
 
         # Redirect the user to the login page if any info is invalid
         if not password_valid or password_valid is None:
-            raise Exception('Incorrect password')
+            flash('Incorrect username or password', 'danger')
+            return redirect(url_for('login'))
     except Exception as _:
-        flash('Incorrect username or password', 'danger')
         return redirect(url_for('login'))
 
     return render_template('home.html')
