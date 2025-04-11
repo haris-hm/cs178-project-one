@@ -1,5 +1,6 @@
 import cs178_project_one.creds as creds
 import pymysql
+from typing import Any
 
 def db_connect():
     connection = pymysql.connect(
@@ -11,7 +12,7 @@ def db_connect():
 
     return connection
 
-def run_query(query):
+def run_query(query) -> tuple[tuple[Any]]:
     connection = db_connect()
     cursor = connection.cursor()
 

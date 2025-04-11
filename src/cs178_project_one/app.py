@@ -66,17 +66,23 @@ def register():
     else:
         return render_template('register.html')
 
-@app.route('/')
-@authenticate
-def home(): 
-    products: tuple[tuple[str | float | int]] = product_manager.get_products()
-
-    return render_template('home.html', products=products)
-
 @app.route('/cart', methods=['GET', 'POST'])
 @authenticate
 def cart():
-    return render_template('cart.html')
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template('cart.html')
+    
+@app.route('/')
+@authenticate
+def home(): 
+    category: str = request.args.get('category')
+
+    categories: tuple[tuple[str]] = product_manager.get_all_categories()
+    products: tuple[tuple[str | float | int]] = product_manager.get_products(category)
+
+    return render_template('home.html', categories=categories, products=products)
 
 def serve():
     app.run(host='0.0.0.0', port=8080, debug=True)
