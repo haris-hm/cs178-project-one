@@ -11,19 +11,37 @@
     <header>
         {% include "navbar.html" %}
     </header>
-    <div class="d-flex justify-content-center align-items-center">
-        <div class="container">
+    <div class="">
+        <div class="container w-100">
+            <div class="row border-bottom py-3 align-items-center text-bg-success rounded-4">
+                <div class="col-md-5">
+                    <h1>Description</h1>
+                </div>
+                <div class="col-md-3">
+                    <h1>Category</h1>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2 text-end">
+                    <h1>Price</h1>
+                </div>
+                <div class="col-md-1 text-end"></div>
+            </div>
+
             {% for product in products %}
-            <div class="row">
-                <div class="col-md-auto">
+            <div class="row border-bottom py-3 align-items-center">
+                <div class="col-md-5 border-end">
+                    <h1>{{ product[0] }}</h1>
+                </div>
+                <div class="col-md-3 border-end">
                     <h1>{{ product[1] }}</h1>
                 </div>
-                <div class="col-md-auto">
-                    <h1>{{ product[2] }}</h1>
+                <div class="col-md-1"></div>
+                <div class="col-md-2 text-end">
+                    <h1>${{ product[2] }}</h1>
                 </div>
-                <div class="col-md-auto">
-                    <h1>{{ product[3] }}</h1>
-                </div>
+                <div class="col-md-1 text-end">
+                    <button class="btn btn-warning"><img src="../static/img/cart-plus-solid.svg" width="40" height="40" alt=""></button>
+                </div>    
             </div>
             {% endfor %}
         </div>
