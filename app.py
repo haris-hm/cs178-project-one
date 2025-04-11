@@ -1,9 +1,31 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
+from functools import wraps
 
 import user_manager
+import product_manager
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+
+# Very secure authentication method
+def authenticate(func):
+    @wraps(func)
+    def auth_user(*args, **kwargs):
+        try:
+            username = request.args['username']
+            password = request.args['password']
+
+            password_valid: bool | None = user_manager.validate_password(username, password)
+
+            # Redirect the user to the login page if any info is invalid
+            if not password_valid or password_valid is None:
+                flash('Incorrect username or password', 'danger')
+                return redirect(url_for('login'))
+        except Exception as _:
+            return redirect(url_for('login'))
+        
+        return func(*args, **kwargs)
+    return auth_user
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -21,7 +43,7 @@ def login():
             flash('Incorrect username or password', 'danger')
             return redirect(url_for('login'))
         else:
-            # Very secure, I know...
+            # Again, definitely very secure...
             return redirect(url_for('home', username=username, password=password))
     else:
         return render_template('login.html')
@@ -39,30 +61,20 @@ def register():
             flash(create_account_response[1], 'warning') 
             return redirect(url_for('register'))
         
-        flash('Your account has been created', 'success')
+        flash('Your account has been created. You can now log in.', 'success')
         return redirect(url_for('login'))
     else:
         return render_template('register.html')
 
 @app.route('/')
-def home():
-    try:
-        # Very secure authentication
-        username = request.args['username']
-        password = request.args['password']
+@authenticate
+def home(): 
+    products: tuple[tuple[str | float | int]] = product_manager.get_products()
 
-        password_valid: bool | None = user_manager.validate_password(username, password)
+    return render_template('home.html', products=products)
 
-        # Redirect the user to the login page if any info is invalid
-        if not password_valid or password_valid is None:
-            flash('Incorrect username or password', 'danger')
-            return redirect(url_for('login'))
-    except Exception as _:
-        return redirect(url_for('login'))
-
-    return render_template('home.html')
-
-@app.route('/cart')
+@app.route('/cart', methods=['GET', 'POST'])
+@authenticate
 def cart():
     return render_template('cart.html')
 
