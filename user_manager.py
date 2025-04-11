@@ -1,8 +1,8 @@
-import db_manager
+import db_utils
 import re
 
 def validate_password(username: str, password: str) -> bool | None:
-    result: tuple[tuple[str]] | None = db_manager.run_query(
+    result: tuple[tuple[str]] | None = db_utils.run_query(
         f"""
         SELECT * FROM Users
         WHERE name = '{username}';
@@ -26,7 +26,7 @@ def create_account(username: str, password: str) -> tuple[bool, str]:
         return (False, 'Password must be at least 8 characters with no spaces')
     
     # Check if the username is already in use
-    result: tuple[tuple[str]] | None = db_manager.run_query(
+    result: tuple[tuple[str]] | None = db_utils.run_query(
         f"""
         SELECT * FROM Users
         WHERE name = '{username}';
@@ -37,7 +37,7 @@ def create_account(username: str, password: str) -> tuple[bool, str]:
         return (False, 'That username is already in use')
     
     # Create the account
-    result = db_manager.run_query(
+    result = db_utils.run_query(
         f"""
         INSERT INTO Users (name, password)
         VALUES ('{username}', '{password}');
