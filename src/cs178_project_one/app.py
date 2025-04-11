@@ -77,7 +77,10 @@ def cart():
 @app.route('/')
 @authenticate
 def home(): 
-    category: str = request.args.get('category')
+    category: str | None = request.args.get('category')
+
+    if category is None:
+        return redirect(url_for('home', username=request.args.get('username'), password=request.args.get('password'), category='All'))
 
     categories: tuple[tuple[str]] = product_manager.get_all_categories()
     products: tuple[tuple[str | float | int]] = product_manager.get_products(category)

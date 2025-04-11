@@ -20,7 +20,7 @@ def get_all_categories() -> tuple[tuple[str]]:
 
     return categories
 
-def get_products(category_name: str) -> tuple[tuple[str | float | int]]:
+def get_products(category_name: str | None) -> tuple[tuple[str | float | int]]:
     if category_name == 'All':
         return db_utils.run_query(
             """
