@@ -46,14 +46,17 @@ def register():
 
 @app.route('/')
 def home():
-    # Very secure authentication
-    username = request.args['username']
-    password = request.args['password']
+    try:
+        # Very secure authentication
+        username = request.args['username']
+        password = request.args['password']
 
-    password_valid: bool | None = user_manager.validate_password(username, password)
+        password_valid: bool | None = user_manager.validate_password(username, password)
 
-    # Redirect the user to the login page if any info is invalid
-    if not password_valid or password_valid is None:
+        # Redirect the user to the login page if any info is invalid
+        if not password_valid or password_valid is None:
+            raise Exception('Incorrect password')
+    except Exception as _:
         flash('Incorrect username or password', 'danger')
         return redirect(url_for('login'))
 
