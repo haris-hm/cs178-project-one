@@ -1,22 +1,21 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-0 shadow">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-            <img src="../static/img/cart-flatbed-solid.svg" width="30" height="30" alt="">
+        <a class="navbar-brand mx-3" href="/">
+            <img src="../static/img/cart-flatbed-solid.svg" width="40" height="40" alt="">
         </a>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
+            <ul class="navbar-nav mx-3">
+                <li class="nav-item fs-3">
                     <a class="nav-link" 
-                    href=
-                    "{% if request.args.get('username') and request.args.get('password') %}
+                    href="{% if request.args.get('username') and request.args.get('password') %}
                         /?username={{ request.args['username'] }}&password={{ request.args['password'] }}
                     {% else %}
                         {{ url_for('login') }}
                     {% endif %}">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href=
-                    "{% if request.args.get('username') and request.args.get('password') %}
+                <li class="nav-item mx-3">
+                    <a class="nav-link fs-3" 
+                    href="{% if request.args.get('username') and request.args.get('password') %}
                         /cart?username={{ request.args['username'] }}&password={{ request.args['password'] }}
                     {% else %}
                         {{ url_for('login') }}

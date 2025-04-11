@@ -1,0 +1,16 @@
+body {
+    background-color: #f8f9fa; 
+    padding-top: 70px;
+}
+
+nav {
+    background-color: #e6e9ec;
+}
+
+.nav-item > a:hover { 
+    color: #ffffe1 !important; 
+}
+
+.nav-item:hover {
+    background-color: #157347;
+}
