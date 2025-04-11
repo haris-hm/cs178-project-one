@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from functools import wraps
 
-import user_manager
-import product_manager
+import cs178_project_one.user_manager as user_manager
+import cs178_project_one.product_manager as product_manager
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -78,5 +78,8 @@ def home():
 def cart():
     return render_template('cart.html')
 
-if __name__ == '__main__':
+def serve():
     app.run(host='0.0.0.0', port=8080, debug=True)
+
+if __name__ == '__main__':
+    serve()

@@ -1,4 +1,4 @@
-import db_utils
+import cs178_project_one.db_utils as db_utils
 import re
 
 def validate_password(username: str, password: str) -> bool | None:

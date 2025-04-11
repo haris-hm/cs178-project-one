@@ -1,4 +1,4 @@
-import creds
+import cs178_project_one.creds as creds
 import pymysql
 
 def db_connect():

@@ -1,4 +1,4 @@
-import db_utils
+import cs178_project_one.db_utils as db_utils
 import boto3
 
 def get_products() -> tuple[tuple[str | float | int]]:
