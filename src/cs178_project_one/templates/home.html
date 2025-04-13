@@ -31,6 +31,18 @@
     </div>    
 
     <div class="container w-100">
+        <div class="row py-1 align-items-center">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} mt-1 mb-3 text-center">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
         <div class="row border-bottom py-3 align-items-center text-bg-success rounded-4">
             <div class="col-md-5">
                 <h1>Description</h1>
@@ -59,7 +71,14 @@
                     <h1>${{ product[2] }}</h1>
                 </div>
                 <div class="col-md-1 text-end">
-                    <button class="btn btn-warning"><img src="../static/img/cart-plus-solid.svg" width="40" height="40" alt=""></button>
+                    <form action="{{ url_for('cart', username=request.args['username'], password=request.args['password'], category=request.args['category']) }}" method="POST">
+                        <button type="submit" class="btn btn-warning">
+                            <img src="../static/img/cart-plus-solid.svg" width="40" height="40" alt="">
+                        </button>
+                        <input type="hidden" name="product_name" value="{{ product[0] }}">
+                        <input type="hidden" name="product_price" value="{{ product[2] }}">
+                        <input type="hidden" name="product_id" value="{{ product[3] }}">
+                    </form>
                 </div>    
             </div>
             {% endfor %}

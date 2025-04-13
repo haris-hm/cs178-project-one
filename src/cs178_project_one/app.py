@@ -70,7 +70,19 @@ def register():
 @authenticate
 def cart():
     if request.method == 'POST':
-        pass
+        username = request.args.get('username')
+        product_id = request.form['product_id']
+        product_name = request.form['product_name']
+        product_price = request.form['product_price']
+
+        product_manager.edit_cart(username, product_id, product_name, product_price)
+        
+        if product_name[-1].lower() == 's':
+            flash(f'{product_name} have been added to your cart! Feel free to keep shopping, or head to your cart now!', 'success')
+        else:
+            flash(f'{product_name} has been added to your cart! Feel free to keep shopping, or head to your cart now!', 'success')
+        
+        return redirect(url_for('home', username=username, password=request.args.get('password'), category=request.args.get('category')))
     else:
         return render_template('cart.html')
     
