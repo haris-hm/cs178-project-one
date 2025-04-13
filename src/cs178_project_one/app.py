@@ -10,6 +10,12 @@ app.secret_key = 'your_secret_key'
 
 # Very secure authentication method
 def authenticate(func):
+    """
+    Decorator to authenticate the user before accessing a route.
+    
+    :param func: The Flask route to decorate.
+    :return: The decorated route function.
+    """
     @wraps(func)
     def auth_user(*args, **kwargs):
         try:
@@ -78,6 +84,7 @@ def cart():
 
         product_manager.edit_cart(username, product_id, product_name, product_price)
         
+        # Customized user feedback after adding an item to the cart
         if product_name[-1].lower() == 's':
             flash(f'{product_name} have been added to your cart! Feel free to keep shopping, or head to your cart now!', 'success')
         else:

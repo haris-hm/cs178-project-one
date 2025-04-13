@@ -2,6 +2,14 @@ import cs178_project_one.db_utils as db_utils
 import re
 
 def validate_password(username: str, password: str) -> bool | None:
+    """
+    Validates the password for a given username. 
+    
+    :param username: The username to validate the password for.
+    :param password: The password to validate.
+    :return: True if the password is correct, False if it is incorrect, and None if the account does not exist.
+    """
+
     result: tuple[tuple[str]] | None = db_utils.run_query(
         f"""
         SELECT * FROM Users
@@ -16,6 +24,14 @@ def validate_password(username: str, password: str) -> bool | None:
         return password == stored_password        
 
 def create_account(username: str, password: str) -> tuple[bool, str]: 
+    """
+    Creates a new account with the given username and password. 
+
+    :param username: The username for the new account.
+    :param password: The password for the new account.
+    :return: A tuple containing a boolean indicating whether the account was created successfully and a message.
+    """
+
     # Check if the username and password fit the patterns
     username_pattern = r'^[a-zA-Z0-9]{1,20}$'
     password_pattern = r'^[\x21-\x7E]{8,}$'
