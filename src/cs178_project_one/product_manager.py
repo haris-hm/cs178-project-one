@@ -3,6 +3,7 @@ import boto3
 
 from boto3.dynamodb.conditions import Key
 from decimal import Decimal
+from typing import Any
 
 TABLE_NAME = 'ShoppingCart'
 
@@ -60,7 +61,7 @@ def edit_cart(username: str, product_id: str, product_name: str, product_price: 
         create_cart(username, product_id, product_name, product_price)
         return
     
-    current_items = response['Items'][0]['cart_items']
+    current_items: dict[str, dict[Any]] = response['Items'][0]['cart_items']
     
     # If the product is already in the user's cart, update the quantity
     if product_id in current_items.keys():
@@ -96,7 +97,7 @@ def edit_cart(username: str, product_id: str, product_name: str, product_price: 
     
 
 def create_cart(username: str, product_id: str, product_name: str, product_price: float):
-    new_cart = {
+    new_cart: dict[str, str | dict[str, dict[Any]]] = {
         'username': username,
         'cart_items': {
             product_id: {
@@ -109,3 +110,20 @@ def create_cart(username: str, product_id: str, product_name: str, product_price
 
     table.put_item(Item=new_cart)
 
+def get_cart(username: str) -> dict[str, dict[Any]]:
+    response = table.query(
+        KeyConditionExpression=Key('username').eq(username)
+    )
+
+    if len(response['Items']) == 0:
+        return {}
+    
+    return response['Items'][0]['cart_items']
+
+def delete_cart_item(username: str, product_id: str):
+    print('DELETE')
+    pass
+
+def update_quantity(username: str, product_id: str, new_quantity: str):
+    print('UPDATE')
+    pass

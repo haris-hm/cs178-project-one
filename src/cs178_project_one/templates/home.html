@@ -12,14 +12,18 @@
         {% include "navbar.html" %}
     </header>
 
-    <div class="container">
+    <div class="container w-100">
         <div class="row py-3">
-            <div class="col-md-2 text-start">
-                <h2>Filter</h2>
+            <div class="col-md-4">
+                <h2>Currently Viewing:</h2>
             </div>
+            <div class="col-md-5">
+                <h2>{{ request.args['category'] }}</h2>
+            </div>
+            <div class="col-md-1"></div>
             <div class="col-md-2 text-end">
                 <div class="dropdown">
-                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Select...</button>
+                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter...</button>
                     <ul class="dropdown-menu">
                         {% for category in categories %}
                             <li><a href="{{ url_for('home', username=request.args['username'], password=request.args['password'], category=category[0]) }}" class="dropdown-item">{{ category[0] }}</a></li>  
@@ -28,9 +32,7 @@
                 </div>
             </div>
         </div>
-    </div>    
 
-    <div class="container w-100">
         <div class="row py-1 align-items-center">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from functools import wraps
+from typing import Any
 
 import cs178_project_one.user_manager as user_manager
 import cs178_project_one.product_manager as product_manager
@@ -69,8 +70,8 @@ def register():
 @app.route('/cart', methods=['GET', 'POST'])
 @authenticate
 def cart():
+    username = request.args.get('username')
     if request.method == 'POST':
-        username = request.args.get('username')
         product_id = request.form['product_id']
         product_name = request.form['product_name']
         product_price = request.form['product_price']
@@ -84,7 +85,23 @@ def cart():
         
         return redirect(url_for('home', username=username, password=request.args.get('password'), category=request.args.get('category')))
     else:
-        return render_template('cart.html')
+        cart: dict[str, dict[Any]] = product_manager.get_cart(username)
+        return render_template('cart.html', cart=cart)
+    
+@app.route('/cart/update-quantity', methods=['POST'])
+@authenticate
+def update_quantity():
+    username = request.args.get('username')
+    delete = request.args.get('delete')
+    product_id = request.args.get('product_id')
+    quantity = request.args.get('quantity')
+
+    if int(delete):
+        product_manager.delete_cart_item(username, product_id)
+    else:
+        product_manager.update_quantity(username, product_id, quantity)
+
+    return redirect(url_for('cart', username=username, password=request.args.get('password')))
     
 @app.route('/')
 @authenticate
