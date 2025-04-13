@@ -65,16 +65,7 @@ def edit_cart(username: str, product_id: str, product_name: str, product_price: 
     
     # If the product is already in the user's cart, update the quantity
     if product_id in current_items.keys():
-        table.update_item(
-            Key={'username': username},
-            UpdateExpression='SET cart_items.#pid.quantity = :val',
-            ExpressionAttributeNames={
-                '#pid': product_id
-            },
-            ExpressionAttributeValues={
-                ':val': current_items[product_id]['quantity'] + 1
-            }
-        )
+        update_quantity(username, product_id, current_items[product_id]['quantity'] + 1)
         return
 
     # If the cart exists, add a new item into the cart_items list
@@ -121,9 +112,35 @@ def get_cart(username: str) -> dict[str, dict[Any]]:
     return response['Items'][0]['cart_items']
 
 def delete_cart_item(username: str, product_id: str):
-    print('DELETE')
-    pass
+    table.update_item(
+        Key={'username': username},
+        UpdateExpression='REMOVE cart_items.#pid',
+        ExpressionAttributeNames={
+            '#pid': product_id
+        }
+    )
+
+    response = table.query(
+        KeyConditionExpression=Key('username').eq(username)
+    )
+    current_items: dict[str, dict[Any]] = response['Items'][0]['cart_items']
+
+    if len(current_items.keys()) == 0:
+        clear_cart(username)
 
 def update_quantity(username: str, product_id: str, new_quantity: str):
-    print('UPDATE')
-    pass
+    table.update_item(
+        Key={'username': username},
+        UpdateExpression='SET cart_items.#pid.quantity = :val',
+        ExpressionAttributeNames={
+            '#pid': product_id
+        },
+        ExpressionAttributeValues={
+            ':val': Decimal(new_quantity)
+        }
+    )
+
+def clear_cart(username: str):
+    table.delete_item(
+        Key={'username': username}
+    )

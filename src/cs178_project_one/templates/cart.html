@@ -65,8 +65,7 @@
                                         product_id=key,
                                         delete=0,
                                         quantity=(val['quantity'] | int) - 1
-                                    )}}" 
-                                method="POST">
+                                    )}}" method="POST">
                                     <button type="submit" class="btn btn-warning">
                                         <img src="../static/img/minus-solid.svg" width="30" height="30" alt="">
                                     </button>
@@ -81,8 +80,7 @@
                                         product_id=key,
                                         delete=1,
                                         quantity=0
-                                    )}}" 
-                                method="POST">
+                                    )}}" method="POST">
                                     <button type="submit" class="btn btn-warning">
                                         <img src="../static/img/trash-can-solid.svg" width="30" height="30" alt="">
                                     </button>
@@ -97,8 +95,7 @@
                                         product_id=key,
                                         delete=0,
                                         quantity=(val['quantity'] | int) + 1
-                                    )}}" 
-                                method="POST">
+                                    )}}" method="POST">
                                     <button type="submit" class="btn btn-warning">
                                         <img src="../static/img/plus-solid.svg" width="30" height="30" alt="">
                                     </button>
@@ -111,7 +108,19 @@
             </div>
             {% endfor %}
             <div class="row py-3">
-                <div class="col-md-12 text-end">
+                <div class="col-md-4">
+                    <form action="{{ 
+                        url_for(
+                            'clear_cart', 
+                            username=request.args['username'], 
+                            password=request.args['password']
+                        )}}" method="POST">
+                        <button type="submit" class="btn btn-danger">
+                            <h3>Clear Cart</h3>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-8 text-end">
                     <h1>Total: ${{ data.total | round(2) }}</h1>
                 </div>
             </div>

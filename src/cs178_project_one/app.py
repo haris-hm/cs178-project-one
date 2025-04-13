@@ -102,6 +102,13 @@ def update_quantity():
         product_manager.update_quantity(username, product_id, quantity)
 
     return redirect(url_for('cart', username=username, password=request.args.get('password')))
+
+@app.route('/cart/clear', methods=['POST'])
+@authenticate
+def clear_cart():
+    username = request.args.get('username')
+    product_manager.clear_cart(username)
+    return redirect(url_for('cart', username=username, password=request.args.get('password')))
     
 @app.route('/')
 @authenticate
