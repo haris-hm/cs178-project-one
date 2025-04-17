@@ -12,6 +12,7 @@ app.secret_key = 'your_secret_key'
 def authenticate(func):
     """
     Decorator to authenticate the user before accessing a route.
+    If the user is not logged in, it redirects them to the login page.
     
     :param func: The Flask route to decorate.
     :return: The decorated route function.
@@ -36,6 +37,13 @@ def authenticate(func):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    Handles user login requests. For POST requests, it authenticates the username and password. 
+    For GET requests, it renders the login page.
+
+    :return: Redirects to the home page if login is successful, otherwise renders the login page.  
+    """
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -57,6 +65,17 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """
+    Handles user registration requests. 
+    
+    For POST requests, it validates the username is not already in use, 
+    then registers the account in the database. For GET requests, it renders
+    the register page.
+
+    :return: Redirects to the login page if registration is successful, otherwise,
+    it renders the register page.
+    """
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -76,6 +95,16 @@ def register():
 @app.route('/cart', methods=['GET', 'POST'])
 @authenticate
 def cart():
+    """
+    Handles the main cart page, as well as adding items to the cart.
+
+    For POST requests, it puts the item the user wants into their cart.
+    For GET requests, it renders the cart page.
+
+    :return: Redirects to the home page so the user can add more items if they want
+    after they add one, otherwise, it renders the cart page.
+    """
+
     username = request.args.get('username')
     if request.method == 'POST':
         product_id = request.form['product_id']
@@ -98,12 +127,20 @@ def cart():
 @app.route('/cart/update-quantity', methods=['POST'])
 @authenticate
 def update_quantity():
+    """
+    Handles update quantity requests. If the user adds or removes a product by clicking the 
+    plus or minus button, it updates the quantity accordingly. If the user clicks the trash
+    can, it deletes all of that product from their cart.
+
+    :return: Redirect to the cart page, now updated.
+    """
+
     username = request.args.get('username')
     delete = request.args.get('delete')
     product_id = request.args.get('product_id')
     quantity = request.args.get('quantity')
 
-    if int(delete):
+    if int(delete) or int(quantity) <= 0:
         product_manager.delete_cart_item(username, product_id)
     else:
         product_manager.update_quantity(username, product_id, quantity)
@@ -113,6 +150,12 @@ def update_quantity():
 @app.route('/cart/clear', methods=['POST'])
 @authenticate
 def clear_cart():
+    """
+    Clears the user's cart of all items.
+
+    :return: Redirect to the updated cart page.
+    """
+
     username = request.args.get('username')
     product_manager.clear_cart(username)
     return redirect(url_for('cart', username=username, password=request.args.get('password')))
@@ -120,6 +163,13 @@ def clear_cart():
 @app.route('/')
 @authenticate
 def home(): 
+    """
+    Handles requests to the home page with products filtered based on the 
+    user's category URL argument. Requires the user to be logged in.
+
+    :return: Redirect to the home page, with items filtered how the user wants.
+    """
+
     category: str | None = request.args.get('category')
 
     if category is None:
