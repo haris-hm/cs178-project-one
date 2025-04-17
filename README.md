@@ -1,6 +1,6 @@
 # ShopSmart - A Simple Online Store Emulator
 ## Project Overview
-ShopSmart is a simple web application which emulates the experience of an online store. Users can create accounts, log in, browse products from various categories, add products to their cart, and update quantities and delete products from their cart.
+ShopSmart is a simple web application which emulates the experience of an online store (obviously, there is no way to buy things, as it's not a real store). Users can create accounts, log in, browse products from various categories, add products to their cart, and update quantities and delete products from their cart.
 
 ### Key Features
 1. Simple User Authentication:
