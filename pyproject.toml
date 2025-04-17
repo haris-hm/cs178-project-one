@@ -1,7 +1,7 @@
 [project]
 name = "cs178-project-one"
 version = "0.1.0"
-description = "Add your description here"
+description = "A small shop app where the user can make an account and add items into their cart, as well as update quantities in their cart and delete items in the cart."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
