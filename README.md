@@ -29,7 +29,7 @@ This project uses a wide variety of cloud and database tools which we learned ab
 - **MySQL (Hosted on AmazonRDS)**: Used for storage of relational data (*e.g.,* user accounts, inventory, and product categories).
 - **AWS DynamoDB**: A NoSQL database used for managing non-relational and high demand data (*e.g.,* user's shopping carts).
 ### Development Tools
-- **[uv](https://docs.astral.sh/uv/)**: A Python package manager which simplifies dealing with virtual environments and dependencies. We use it in CS-188 (Software Engineering), and I really like it, so I used it here, as well.
+- **[uv](https://docs.astral.sh/uv/)**: A Python package manager which simplifies dealing with virtual environments and dependencies. We use it in CS-188 (Software Engineering), and I really like it, so I used it here as well.
 - **Git/Github**: Code version control
  
 
